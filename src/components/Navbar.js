@@ -1,46 +1,84 @@
-// Navbar.js (new component)
-import React from "react";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faLaptopCode,
+  faCalendarAlt,
+  faUserCog,
+  faBars,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
-  const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsAdmin(!!user);
-    });
-    return unsubscribe;
-  }, []);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <a href="/" className="navbar-logo">
-          Club Portal
-        </a>
+        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+          <img src="./icon.png" alt="CS Club Logo" />
+          CS Club
+        </Link>
+        <button
+          className="navbar-toggle"
+          onClick={toggleMenu}
+          aria-label="Toggle navigation"
+        >
+          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
+        </button>
       </div>
-
-      <div className="navbar-links">
-        {isAdmin && (
-          <div className="admin-indicator">
-            <span>Admin Mode</span>
-            <button onClick={handleLogout} className="logout-button">
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
+      <ul className={`navbar-links ${isOpen ? "active" : ""}`}>
+        <li>
+          <Link
+            to="/"
+            className={isActive("/") ? "active" : ""}
+            onClick={closeMenu}
+          >
+            <FontAwesomeIcon icon={faHome} /> Home
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/activities"
+            className={isActive("/activities") ? "active" : ""}
+            onClick={closeMenu}
+          >
+            <FontAwesomeIcon icon={faCalendarAlt} /> Activities
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/projects"
+            className={isActive("/projects") ? "active" : ""}
+            onClick={closeMenu}
+          >
+            <FontAwesomeIcon icon={faLaptopCode} /> Projects
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/admin-panel"
+            className={isActive("/admin-panel") ? "active" : ""}
+            onClick={closeMenu}
+          >
+            <FontAwesomeIcon icon={faUserCog} /> Admin
+          </Link>
+        </li>
+      </ul>
     </nav>
   );
 }
