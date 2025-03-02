@@ -39,41 +39,6 @@ function Footer() {
             </a>
           </div>
         </div>
-
-        <div className="footer-section">
-          <h4>Quick Links</h4>
-          <ul className="footer-links">
-            <li>
-              <Link to="/activities">Activities</Link>
-            </li>
-            <li>
-              <Link to="/projects">Projects</Link>
-            </li>
-            <li>
-              <Link to="/admin-login">Admin</Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="footer-section">
-          <h4>Resources</h4>
-          <ul className="footer-links">
-            <li>
-              <a
-                href="https://github.com/QAD6675/cs-club-portfolio"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faCode} /> Source Code
-              </a>
-            </li>
-            <li>
-              <Link to="/activities">
-                <FontAwesomeIcon icon={faCalendar} /> Event Calendar
-              </Link>
-            </li>
-          </ul>
-        </div>
       </div>
 
       <div className="footer-bottom">

@@ -37,8 +37,9 @@ function AdminLogin() {
     <div className="admin-login-container">
       <div className="admin-login-card">
         <h2>Admin Login</h2>
-        <p className="login-subtitle">Last updated: 2025-03-02 18:02:04</p>
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div className="error-message">access denied,invalid credentials</div>
+        )}
         <form onSubmit={handleLogin} className="admin-login-form">
           <div className="form-group">
             <label htmlFor="email">Email:</label>
@@ -66,7 +67,6 @@ function AdminLogin() {
             Login
           </button>
         </form>
-        <div className="debug-info">Current User: QAD6675</div>
       </div>
     </div>
   );

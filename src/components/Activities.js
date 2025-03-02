@@ -21,17 +21,37 @@ function Activities() {
   const [editActivity, setEditActivity] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
-  // Move getStatusLabel inside the component
-  const getStatusLabel = (status) => {
-    switch (status?.toLowerCase()) {
+  // Function to determine status based on date
+  const determineStatus = (activityDate) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    const date = new Date(activityDate);
+    date.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    // Convert dates to timestamps for comparison
+    const todayTime = today.getTime();
+    const dateTime = date.getTime();
+
+    if (dateTime === todayTime) {
+      return "ongoing";
+    } else if (dateTime < todayTime) {
+      return "completed";
+    } else {
+      return "upcoming";
+    }
+  };
+
+  // Get status label and class name
+  const getStatusLabel = (activity) => {
+    const status = determineStatus(activity.date);
+    switch (status) {
       case "upcoming":
         return { label: "Upcoming", className: "status-upcoming" };
       case "completed":
         return { label: "Completed", className: "status-completed" };
       case "ongoing":
-        return { label: "Ongoing", className: "status-ongoing" };
-      case "cancelled":
-        return { label: "Cancelled", className: "status-cancelled" };
+        return { label: "Today", className: "status-ongoing" };
       default:
         return { label: "Unknown", className: "status-unknown" };
     }
@@ -48,7 +68,11 @@ function Activities() {
   const loadActivities = async () => {
     try {
       const activitiesList = await getActivities();
-      setActivities(activitiesList);
+      // Sort activities by date
+      const sortedActivities = activitiesList.sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+      setActivities(sortedActivities);
     } catch (error) {
       console.error("Error loading activities:", error);
     }
@@ -59,7 +83,6 @@ function Activities() {
       title: "",
       description: "",
       date: new Date().toISOString().split("T")[0],
-      status: "upcoming",
       location: "",
       registrationLink: "",
     });
@@ -76,10 +99,17 @@ function Activities() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
+      // The status will be determined automatically based on the date
+      const activityToSave = {
+        ...editActivity,
+        // Remove status field as it will be determined automatically
+        status: undefined,
+      };
+
       if (isAddingNew) {
-        await addActivity(editActivity);
+        await addActivity(activityToSave);
       } else {
-        await updateActivity(editActivity.id, editActivity);
+        await updateActivity(activityToSave.id, activityToSave);
       }
       setEditMode(false);
       setEditActivity(null);
@@ -136,21 +166,6 @@ function Activities() {
             }
             required
           />
-        </div>
-        <div className="form-group">
-          <label>Status:</label>
-          <select
-            value={editActivity.status || "upcoming"}
-            onChange={(e) =>
-              setEditActivity({ ...editActivity, status: e.target.value })
-            }
-            required
-          >
-            <option value="upcoming">Upcoming</option>
-            <option value="ongoing">Ongoing</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
         </div>
         <div className="form-group">
           <label>Location:</label>
@@ -213,7 +228,7 @@ function Activities() {
         <div className="activities-grid">
           {activities.length > 0 ? (
             activities.map((activity) => {
-              const statusInfo = getStatusLabel(activity.status);
+              const statusInfo = getStatusLabel(activity);
               return (
                 <div key={activity.id} className="activity-card">
                   <h3>{activity.title}</h3>

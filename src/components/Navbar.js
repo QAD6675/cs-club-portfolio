@@ -8,9 +8,10 @@ import {
   faUserCog,
   faBars,
   faTimes,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Navbar() {
+function Navbar({ user, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -70,13 +71,25 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link
-            to="/admin-panel"
-            className={isActive("/admin-panel") ? "active" : ""}
-            onClick={closeMenu}
-          >
-            <FontAwesomeIcon icon={faUserCog} /> Admin
-          </Link>
+          {user ? (
+            <button
+              className="logout-button"
+              onClick={() => {
+                handleLogout();
+                closeMenu();
+              }}
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+            </button>
+          ) : (
+            <Link
+              to="/admin-login"
+              className={isActive("/admin-login") ? "active" : ""}
+              onClick={closeMenu}
+            >
+              <FontAwesomeIcon icon={faUserCog} /> Admin
+            </Link>
+          )}
         </li>
       </ul>
     </nav>
