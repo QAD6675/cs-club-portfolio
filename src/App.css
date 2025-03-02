@@ -909,3 +909,110 @@ body {
 .logout-button:hover {
   background-color: var(--accent-red-hover);
 }
+/* Footer Styles */
+.footer {
+  background-color: var(--bg-secondary);
+  padding: 1rem 0;
+  margin-top: auto;
+  font-size: 0.9rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.social-links a {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--accent-primary);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+.footer-title {
+  text-align: center;
+}
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer {
+    padding: 0.75rem 0;
+  }
+
+  .social-links {
+    gap: 1rem;
+  }
+
+  .social-links a {
+    font-size: 1.1rem;
+  }
+}
+/* Activity and Project Container Margins */
+.activities-container,
+.projects-container {
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+}
+
+/* Activity and Project Grid Margins */
+.activities-grid,
+.projects-grid {
+  margin: 2rem 0;
+}
+
+/* Form Container Margins */
+.activity-edit-form,
+.project-edit-form {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Header Margins */
+.activities-header,
+.projects-header {
+  margin-bottom: 2rem;
+}
+
+/* Responsive margins */
+@media (max-width: 768px) {
+  .activities-container,
+  .projects-container {
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+  }
+
+  .activities-grid,
+  .projects-grid {
+    margin: 1.5rem 0;
+  }
+
+  .activity-edit-form,
+  .project-edit-form {
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+  }
+}
