@@ -14,11 +14,10 @@ import Home from "./components/Home";
 import Activities from "./components/Activities";
 import Projects from "./components/Projects";
 import AdminLogin from "./components/AdminLogin";
-import AdminPanel from "./components/AdminPanel";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Styles
-import "./styles/App.css";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -55,15 +54,6 @@ function App() {
             <Route path="/activities" element={<Activities />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route
-              path="/admin-panel"
-              element={
-                <ProtectedRoute user={user}>
-                  <AdminPanel />
-                </ProtectedRoute>
-              }
-            />
-            {/* Redirect any unknown routes to home */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>

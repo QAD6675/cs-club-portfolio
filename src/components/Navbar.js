@@ -1,84 +1,46 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faLaptopCode,
-  faCalendarAlt,
-  faUserCog,
-  faBars,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+// Navbar.js (new component)
+import React from "react";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsAdmin(!!user);
+    });
+    return unsubscribe;
+  }, []);
 
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-
-  const isActive = (path) => {
-    return location.pathname === path;
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <img src="./icon.png" alt="CS Club Logo" />
-          CS Club
-        </Link>
-        <button
-          className="navbar-toggle"
-          onClick={toggleMenu}
-          aria-label="Toggle navigation"
-        >
-          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
-        </button>
+        <a href="/" className="navbar-logo">
+          Club Portal
+        </a>
       </div>
-      <ul className={`navbar-links ${isOpen ? "active" : ""}`}>
-        <li>
-          <Link
-            to="/"
-            className={isActive("/") ? "active" : ""}
-            onClick={closeMenu}
-          >
-            <FontAwesomeIcon icon={faHome} /> Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/activities"
-            className={isActive("/activities") ? "active" : ""}
-            onClick={closeMenu}
-          >
-            <FontAwesomeIcon icon={faCalendarAlt} /> Activities
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/projects"
-            className={isActive("/projects") ? "active" : ""}
-            onClick={closeMenu}
-          >
-            <FontAwesomeIcon icon={faLaptopCode} /> Projects
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/admin-panel"
-            className={isActive("/admin-panel") ? "active" : ""}
-            onClick={closeMenu}
-          >
-            <FontAwesomeIcon icon={faUserCog} /> Admin
-          </Link>
-        </li>
-      </ul>
+
+      <div className="navbar-links">
+        {isAdmin && (
+          <div className="admin-indicator">
+            <span>Admin Mode</span>
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
