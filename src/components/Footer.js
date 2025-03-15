@@ -21,11 +21,11 @@ function Footer() {
             >
               <FontAwesomeIcon icon={faGithub} />
             </a>
-            <a href="mailto:Sana.hamza2009@hotmail.com" aria-label="Email">
+            <a href="Imrane.moutawakil4862@gmail.com" aria-label="Email">
               <FontAwesomeIcon icon={faEnvelope} />
             </a>
             <a
-              href="https://discord.com/users/1327660506626003005"
+              href="https://discord.gg/XU3zemDS"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Discord"
